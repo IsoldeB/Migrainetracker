@@ -1,0 +1,9 @@
+# Ignore compiled Python files
+*.pyc
+
+# Ignore Django's default SQLite database file
+/db.sqlite3
+
+# Ignore the virtual environment directory
+/venv/
+
