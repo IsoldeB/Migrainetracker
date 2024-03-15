@@ -40,5 +40,8 @@
     {% else %}
         <p>Er zijn nog geen migraineaanvallen toegevoegd.</p>
     {% endif %}
+  
+    <!-- Link om een nieuwe migraineaanval toe te voegen -->
+    <a href="{% url 'add_migraine_aanval' %}">Migraineaanval toevoegen</a>
 </body>
 </html>

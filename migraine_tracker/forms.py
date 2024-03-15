@@ -1,7 +1,10 @@
 from django import forms
-from .models import MigraineAanval
+from .models import MigraineAanval, Symptoom, Trigger
 
 class MigraineAanvalForm(forms.ModelForm):
+    symptomen = forms.ModelMultipleChoiceField(queryset=Symptoom.objects.all(), widget=forms.CheckboxSelectMultiple)
+    triggers = forms.ModelMultipleChoiceField(queryset=Trigger.objects.all(), widget=forms.CheckboxSelectMultiple)
+    
     class Meta:
         model = MigraineAanval
         fields = ['datum', 'pijn_score', 'symptomen', 'triggers', 'notities']
@@ -15,9 +18,11 @@ class MigraineAanvalForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['symptomen'].widget.attrs['aria-describedby'] = 'symptomen-help-text'
-        self.fields['triggers'].widget.attrs['aria-describedby'] = 'triggers-help-text'
-        self.fields['notities'].widget.attrs['aria-describedby'] = 'notities-help-text'
+        self.fields['symptomen'].queryset = Symptoom.objects.all()
+        self.fields['triggers'].queryset = Trigger.objects.all()
+        self.fields['symptomen'].widget.attrs.update({'aria-labelledby': 'symptomen-label'})
+        self.fields['triggers'].widget.attrs.update({'aria-labelledby': 'triggers-label'})
+        self.fields['notities'].widget.attrs.update({'aria-describedby': 'notities-help-text'})
 
     def as_accessible(self):
         """
