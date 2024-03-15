@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Migraine aanvallen overzicht</title>
+</head>
+<body>
+    <h1>Migraine aanvallen overzicht</h1>
+    {% if aanvallen %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Pijnscore</th>
+                    <th>Symptomen</th>
+                    <th>Triggers</th>
+                    <th>Notities</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aanval in aanvallen %}
+                <tr>
+                    <td>{{ aanval.datum }}</td>
+                    <td>{{ aanval.pijn_score }}</td>
+                    <td>
+                        {% for symptoom in aanval.symptomen.all %}
+                            {{ symptoom.naam }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for trigger in aanval.triggers.all %}
+                            {{ trigger.naam }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ aanval.notities }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Er zijn nog geen migraineaanvallen toegevoegd.</p>
+    {% endif %}
+</body>
+</html>
