@@ -1,30 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nieuwe Migraineaanval Toevoegen</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Migraineaanval creëren</title>
 </head>
 <body>
-    <h1>Nieuwe Migraineaanval Toevoegen</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="id_datum">Datum:</label>
-        {{ form.datum }}
-        <br>
-        <label for="id_pijn_score">Pijnscore:</label>
-        {{ form.pijn_score }}
-        <br>
-        <label for="id_symptomen">Symptomen:</label>
-        {{ form.symptomen }}
-        <br>
-        <label for="id_triggers">Triggers:</label>
-        {{ form.triggers }}
-        <br>
-        <label for="id_notities">Notities (optioneel):</label>
-        {{ form.notities }}
-        <br>
-        <button type="submit">Opslaan</button>
-    </form>
+  <h1>Migraineaanval creëren</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Opslaan</button>
+  </form>
 </body>
 </html>

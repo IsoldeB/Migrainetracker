@@ -1,18 +1,31 @@
 from django.shortcuts import render, redirect
-from .models import MigraineAanval
+from django.http import HttpResponse
 from .forms import MigraineAanvalForm
-
-def migraine_overzicht(request):
-    aanvallen = MigraineAanval.objects.all()
-    return render(request, 'migraine/overzicht.html', {'aanvallen': aanvallen})
+from .models import MigraineAanval, Symptoom, Trigger
 
 def add_migraine_aanval(request):
     if request.method == 'POST':
         form = MigraineAanvalForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Redirect naar een andere pagina of toon een succesbericht
-            return redirect('migraine_overzicht')  # Of waar je ook naartoe wilt na het toevoegen
+            nieuwe_aanval = form.save(commit=False)
+            nieuwe_aanval.save()  # sla de aanval eerst op
+
+            # Voeg triggers toe aan de aanval
+            triggers = form.cleaned_data['triggers']
+            for trigger in triggers:
+                nieuwe_aanval.triggers.add(trigger)
+            
+            # Voeg symptomen toe aan de aanval
+            symptomen = form.cleaned_data['symptomen']
+            for symptoom in symptomen:
+                nieuwe_aanval.symptomen.add(symptoom)
+            
+            return HttpResponse("Migraineaanval succesvol aangemaakt!")
     else:
         form = MigraineAanvalForm()
+   
     return render(request, 'migraine/add_migraine_aanval.html', {'form': form})
+
+def overzicht(request):
+    aanvallen = MigraineAanval.objects.all()
+    return render(request, 'migraine/overzicht.html', {'aanvallen': aanvallen})
