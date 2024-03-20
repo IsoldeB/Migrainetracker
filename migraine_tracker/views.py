@@ -20,7 +20,7 @@ def add_migraine_aanval(request):
             for symptoom in symptomen:
                 nieuwe_aanval.symptomen.add(symptoom)
             
-            return HttpResponse("Migraineaanval succesvol aangemaakt!")
+            return redirect('overzicht')  # redirect naar de overzichtspagina
     else:
         form = MigraineAanvalForm()
    
