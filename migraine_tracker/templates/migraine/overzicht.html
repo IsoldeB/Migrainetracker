@@ -16,6 +16,7 @@
                     <th>Triggers</th>
                     <th>Medicijnen</th>
                     <th>Notities</th>
+                    <th>Actie</th> <!-- Nieuwe kolom voor de actie (verwijderen) -->
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +40,13 @@
                         {% endfor %}
                     </td>
                     <td>{{ aanval.notities }}</td>
+                    <td>
+                        <!-- Verwijderingsformulier voor elke aanval -->
+                        <form action="{% url 'delete_migraine_aanval' aanval.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Verwijderen</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
