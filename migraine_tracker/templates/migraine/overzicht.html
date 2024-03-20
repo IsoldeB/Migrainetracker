@@ -14,6 +14,7 @@
                     <th>Pijnscore</th>
                     <th>Symptomen</th>
                     <th>Triggers</th>
+                    <th>Medicijnen</th>
                     <th>Notities</th>
                 </tr>
             </thead>
@@ -30,6 +31,11 @@
                     <td>
                         {% for trigger in aanval.triggers.all %}
                             {{ trigger.naam }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for medicijn in aanval.medicijnen.all %}
+                            {{ medicijn.naam }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
                     <td>{{ aanval.notities }}</td>

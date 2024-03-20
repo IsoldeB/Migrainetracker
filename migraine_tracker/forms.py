@@ -5,16 +5,18 @@ class MigraineAanvalForm(forms.ModelForm):
     symptomen = forms.ModelMultipleChoiceField(queryset=Symptoom.objects.all(), widget=forms.CheckboxSelectMultiple)
     triggers = forms.ModelMultipleChoiceField(queryset=Trigger.objects.all(), widget=forms.CheckboxSelectMultiple)
     pijn_score = forms.IntegerField(min_value=0, max_value=10)
+    medicijnen = forms.CharField(max_length=100, required=False, label='Medicijnen (gescheiden door komma\'s)')  # Added 'medicijnen' field
 
     class Meta:
         model = MigraineAanval
-        fields = ['datum', 'pijn_score', 'symptomen', 'triggers', 'notities']
+        fields = ['datum', 'pijn_score', 'symptomen', 'triggers', 'notities', 'medicijnen']  # Include 'medicijnen' field
         labels = {
             'datum': 'Datum',
             'pijn_score': 'Pijnscore',
             'symptomen': 'Symptomen',
             'triggers': 'Triggers',
             'notities': 'Notities (optioneel)',
+            'medicijnen': 'Medicijnen',  # Add label for 'medicijnen' field
         }
         widgets = {
             'datum': forms.DateInput(attrs={'id': 'id_datum', 'type': 'date'}),

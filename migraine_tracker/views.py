@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from .forms import MigraineAanvalForm
 from .models import MigraineAanval, Symptoom, Trigger
 
@@ -8,19 +7,28 @@ def add_migraine_aanval(request):
         form = MigraineAanvalForm(request.POST)
         if form.is_valid():
             nieuwe_aanval = form.save(commit=False)
-            nieuwe_aanval.save()  # sla de aanval eerst op
+
+            # Eerst de aanval opslaan om een ID toe te wijzen
+            nieuwe_aanval.save()
 
             # Voeg triggers toe aan de aanval
             triggers = form.cleaned_data['triggers']
-            for trigger in triggers:
-                nieuwe_aanval.triggers.add(trigger)
-            
+            nieuwe_aanval.triggers.set(triggers)
+
             # Voeg symptomen toe aan de aanval
             symptomen = form.cleaned_data['symptomen']
-            for symptoom in symptomen:
-                nieuwe_aanval.symptomen.add(symptoom)
+            nieuwe_aanval.symptomen.set(symptomen)
+
+            # Haal medicijnen op uit het POST-verzoek
+            medicijnen = request.POST.get('medicijnen', '')
+
+            # Sla de aanval op met de medicijnen als een string
+            nieuwe_aanval.medicijnen = medicijnen
+
+            # Sla de aanval opnieuw op met de medicijnen als een string
+            nieuwe_aanval.save()
             
-            return redirect('overzicht')  # redirect naar de overzichtspagina
+            return redirect('overzicht')  # Redirect naar de overzichtspagina
     else:
         form = MigraineAanvalForm()
    

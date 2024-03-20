@@ -20,3 +20,5 @@ class MigraineAanval(models.Model):
     symptomen = models.ManyToManyField(Symptoom, related_name='migraine_aanvallen')
     triggers = models.ManyToManyField(Trigger, related_name='migraine_aanvallen')
     notities = models.TextField(blank=True, null=True)
+    medicijnen = models.CharField(max_length=100, blank=True, null=True)  # Veld voor medicatie
+
