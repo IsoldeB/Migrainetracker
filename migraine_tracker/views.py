@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MigraineAanvalForm
-from .models import MigraineAanval
+from .models import MigraineAanval, Medicatie, Trigger, Symptoom
 
 def add_migraine_aanval(request):
     if request.method == 'POST':
@@ -19,13 +19,11 @@ def add_migraine_aanval(request):
             symptomen = form.cleaned_data['symptomen']
             nieuwe_aanval.symptomen.set(symptomen)
 
-            # Haal medicijnen op uit het POST-verzoek
-            medicijnen = request.POST.get('medicijnen', '')
+            # Voeg medicaties toe aan de aanval
+            medicaties = form.cleaned_data['medicaties']
+            nieuwe_aanval.medicaties.set(medicaties)
 
-            # Sla de aanval op met de medicijnen als een string
-            nieuwe_aanval.medicijnen = medicijnen
-
-            # Sla de aanval opnieuw op met de medicijnen als een string
+            # Sla de aanval opnieuw op met de many-to-many relaties
             nieuwe_aanval.save()
             
             return redirect('overzicht')  # Redirect naar de overzichtspagina

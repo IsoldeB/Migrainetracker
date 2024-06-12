@@ -5,8 +5,8 @@ class MigraineAanval(models.Model):
     pijn_score = models.IntegerField()
     symptomen = models.ManyToManyField('Symptoom', related_name='migraine_aanvallen')
     triggers = models.ManyToManyField('Trigger', related_name='migraine_aanvallen')
-    notities = models.TextField(blank=True, null=True)
-    medicaties = models.ManyToManyField('Medicatie', related_name='migraine_aanvallen')
+    notities = models.TextField(blank=True, null=True)  # Nieuw veld voor extra notities
+    medicaties = models.ManyToManyField('Medicatie', related_name='migraine_aanvallen')  # Relatie met Medicatie model
 
 class Symptoom(models.Model):
     SYMPTOOM_CHOICES = (
@@ -17,9 +17,6 @@ class Symptoom(models.Model):
     )
     naam = models.CharField(max_length=100, choices=SYMPTOOM_CHOICES)
 
-    def __str__(self):
-        return self.naam
-
 class Trigger(models.Model):
     TRIGGER_CHOICES = (
         ('Stress', 'Stress'),
@@ -29,11 +26,5 @@ class Trigger(models.Model):
     )
     naam = models.CharField(max_length=100, choices=TRIGGER_CHOICES)
 
-    def __str__(self):
-        return self.naam
-
 class Medicatie(models.Model):
     naam = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.naam

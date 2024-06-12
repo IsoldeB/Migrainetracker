@@ -1,25 +1,37 @@
 from django import forms
-from .models import MigraineAanval, Symptoom, Trigger
+from .models import MigraineAanval, Symptoom, Trigger, Medicatie
 
 class MigraineAanvalForm(forms.ModelForm):
-    symptomen = forms.ModelMultipleChoiceField(queryset=Symptoom.objects.all(), widget=forms.CheckboxSelectMultiple)
-    triggers = forms.ModelMultipleChoiceField(queryset=Trigger.objects.all(), widget=forms.CheckboxSelectMultiple)
+    symptomen = forms.ModelMultipleChoiceField(
+        queryset=Symptoom.objects.all(), 
+        widget=forms.CheckboxSelectMultiple
+    )
+    triggers = forms.ModelMultipleChoiceField(
+        queryset=Trigger.objects.all(), 
+        widget=forms.CheckboxSelectMultiple
+    )
     pijn_score = forms.IntegerField(min_value=0, max_value=10)
-    medicijnen = forms.CharField(max_length=100, required=False, label='Medicijnen (gescheiden door komma\'s)')  # Added 'medicijnen' field
+    medicaties = forms.ModelMultipleChoiceField(
+        queryset=Medicatie.objects.all(), 
+        widget=forms.CheckboxSelectMultiple, 
+        required=False, 
+        label='Medicaties'
+    )
+    datum = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        input_formats=['%Y-%m-%d', '%dd/%mm/%YYYY']
+    )
 
     class Meta:
         model = MigraineAanval
-        fields = ['datum', 'pijn_score', 'symptomen', 'triggers', 'notities', 'medicijnen']  # Include 'medicijnen' field
+        fields = ['datum', 'pijn_score', 'symptomen', 'triggers', 'notities', 'medicaties']
         labels = {
             'datum': 'Datum',
             'pijn_score': 'Pijnscore',
             'symptomen': 'Symptomen',
             'triggers': 'Triggers',
             'notities': 'Notities (optioneel)',
-            'medicijnen': 'Medicijnen',  # Add label for 'medicijnen' field
-        }
-        widgets = {
-            'datum': forms.DateInput(attrs={'id': 'id_datum', 'type': 'date'}),
+            'medicaties': 'Medicaties',
         }
 
     def __init__(self, *args, **kwargs):
